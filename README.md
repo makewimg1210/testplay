@@ -1,6 +1,6 @@
 # 2D横スクロールアクションゲーム (C++)
 
-C++で動く、シンプルな **2D横スクロールアクションゲーム（ターミナル版）** です。
+C++で動く、シンプルな **2D横スクロールアクションゲーム（ターミナル版）** です。  
 Windows / Linux の両方でビルドできるようにしています。
 
 - 左右移動: `A / D`
@@ -13,13 +13,49 @@ Windows / Linux の両方でビルドできるようにしています。
 
 - C++17
 - 標準ライブラリ（Windows: `conio.h` / Linux: `termios`, `select`）
-- CMake
+- CMake（任意）
+
+---
+
+## Linuxで「cmake: command not found」が出る場合
+
+あなたのログのエラーは、**CMakeが未インストール**なのが原因です。
+
+### まずは必要ツールを入れる
+
+Ubuntu / Debian:
+
+```bash
+sudo apt update
+sudo apt install -y build-essential cmake
+```
+
+### CMakeでビルドする場合
+
+```bash
+cmake -S . -B build
+cmake --build build
+./build/side_scroller
+```
+
+---
+
+## LinuxでCMakeを使わない方法（代替）
+
+このリポジトリには `Makefile` も追加してあるので、CMakeなしでもビルドできます。
+
+```bash
+sudo apt update
+sudo apt install -y build-essential
+make
+./side_scroller
+```
 
 ---
 
 ## Windowsでの実行手順（重要）
 
-あなたのエラー:
+よくあるエラー:
 
 - `CMAKE_CXX_COMPILER not set`
 - `nmake ... failed`
@@ -29,8 +65,6 @@ Windows / Linux の両方でビルドできるようにしています。
 
 ### 1) C++コンパイラを用意する
 
-以下のどちらかを入れてください。
-
 - **Visual Studio 2022**（推奨）
   - 「Desktop development with C++」ワークロードを有効化
 - または **Build Tools for Visual Studio**
@@ -39,7 +73,6 @@ Windows / Linux の両方でビルドできるようにしています。
 ### 2) 正しいシェルでCMakeを実行
 
 - おすすめ: **x64 Native Tools Command Prompt for VS 2022**
-- PowerShell / cmdの場合も、Visual Studioの開発者コマンド環境を使う
 
 ### 3) configure / build / run
 
@@ -49,22 +82,13 @@ cmake --build build
 build\side_scroller.exe
 ```
 
-> 補足: Windowsでは `./build/side_scroller` ではなく `build\side_scroller.exe` です。
+> Windowsでは `./build/side_scroller` ではなく `build\side_scroller.exe` を使います。
 
 ### 4) `cmake --install` は必要？
 
-このプロジェクトは通常実行に **install不要** です。
-`build\side_scroller.exe` を直接起動してください。
+通常実行に **install不要** です。`build\side_scroller.exe` を直接起動してください。
 
 ---
-
-## Linuxでの実行
-
-```bash
-cmake -S . -B build
-cmake --build build
-./build/side_scroller
-```
 
 ## コードの入口
 
