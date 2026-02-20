@@ -121,7 +121,9 @@ constexpr int kWorldWidth = 240;
 constexpr int kGroundY = 18;
 constexpr float kGravity = 58.0f;
 constexpr float kMoveSpeed = 20.0f;
-constexpr float kJumpPower = 23.0f;
+constexpr float kJumpPower = 28.0f;
+constexpr float kJumpBufferTime = 0.15f;
+constexpr float kCoyoteTime = 0.10f;
 
 }  // namespace
 
@@ -138,6 +140,8 @@ int main() {
     float vy = 0.0f;
     bool onGround = true;
     int score = 0;
+    float jumpBufferTimer = 0.0f;
+    float coyoteTimer = 0.0f;
 
     std::vector<Platform> platforms = {
         {0, kGroundY, kWorldWidth},
@@ -187,6 +191,18 @@ int main() {
             }
         }
 
+        if (onGround) {
+            coyoteTimer = kCoyoteTime;
+        } else {
+            coyoteTimer = std::max(0.0f, coyoteTimer - dt);
+        }
+
+        if (jump) {
+            jumpBufferTimer = kJumpBufferTime;
+        } else {
+            jumpBufferTimer = std::max(0.0f, jumpBufferTimer - dt);
+        }
+
         vx = 0.0f;
         if (left) {
             vx = -kMoveSpeed;
@@ -195,9 +211,11 @@ int main() {
             vx = kMoveSpeed;
         }
 
-        if (jump && onGround) {
+        if (jumpBufferTimer > 0.0f && coyoteTimer > 0.0f) {
             vy = -kJumpPower;
             onGround = false;
+            jumpBufferTimer = 0.0f;
+            coyoteTimer = 0.0f;
         }
 
         vy += kGravity * dt;
